@@ -1,0 +1,35 @@
+{
+  "name": "health-care",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "compromise": "^14.14.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "http": "^0.0.1-security",
+    "install": "^0.13.0",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.7.2",
+    "next": "15.0.1",
+    "nodemailer": "^6.9.16",
+    "pip": "^0.0.1",
+    "rasa": "^0.2.0",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
