@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client'; // Corrected import
 
 // Initialize socket connection
-const socket = io('http://localhost:4000');
+const socket = io('https://easymedi.vercel.app');
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]); // Store chat messages
