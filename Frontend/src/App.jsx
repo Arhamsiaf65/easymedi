@@ -7,7 +7,6 @@ import Form from './components/form'
 import GoogleSignIn from '../pages/PatientLogin'
 import { LoginProvider } from '../context/loginContext';
 import PatientAppointments from './components/patientAppointments';
-import DoctorsAppointments from './components/doctorAppointments';
 import DoctorLogin from '../pages/DoctorLogin';
 import AppointmentDetails from './components/AppointmentDetails';
 import Footer from './components/footer';

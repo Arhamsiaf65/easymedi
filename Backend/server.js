@@ -14,7 +14,9 @@ const io = new Server(server, {
   cors: {
     origin: [
       'http://localhost:5173',
-      'http://localhost:5174'
+      'http://localhost:5174',
+      'https://easymedi.vercel.app',
+      'https://easymedi-admin.vercel.app'
     ],
     methods: ['GET', 'POST'],
     credentials: true,
