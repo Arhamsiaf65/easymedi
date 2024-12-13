@@ -11,7 +11,7 @@ import DoctorLogin from '../pages/DoctorLogin';
 import AppointmentDetails from './components/AppointmentDetails';
 import Footer from './components/footer';
 import AboutUs from './components/aboutUs';
-import Chatbot from './components/chatboat';
+// import Chatbot from './components/chatboat';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,7 +28,7 @@ function App() {
             <HeroSection />
             
             <Form />
-            <Chatbot />
+            {/* <Chatbot /> */}
             <main className="flex-1 px-4 sm:px-6 lg:px-8">
               <Routes>
                 <Route path="/" element={<PatientAppointments />} />
