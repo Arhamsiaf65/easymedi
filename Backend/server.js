@@ -38,7 +38,10 @@ app.use(express.json({ limit: '10mb' })); // Limit payload size to prevent abuse
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://easymedi.vercel.app',
+  'https://easymedi-admin.vercel.app',
 ];
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -48,7 +51,7 @@ app.use(cors({
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  credentials: true, // Allow credentials like cookies or headers
 }));
 
 // Routes
