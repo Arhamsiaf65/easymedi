@@ -107,7 +107,7 @@ function ManagePatients() {
     // Fetch Appointments
     const fetchAppointments = async () => {
         try {
-            const response = await fetch('http://localhost:4000/appointments/');
+            const response = await fetch('https://easymedi-backend.vercel.app/appointments/');
             const data = await response.json();
             const validAppointments = (data?.appointments?.arr || [])
                 .filter((appointment) => appointment && appointment.patient)
@@ -154,7 +154,7 @@ function ManagePatients() {
             });
 
             const response = await fetch(
-                `http://localhost:4000/appointments/delete?${queryParams.toString()}`,
+                `https://easymedi-backend.vercel.app/appointments/delete?${queryParams.toString()}`,
                 { method: 'DELETE' }
             );
             const data = await response.json();
@@ -176,7 +176,7 @@ function ManagePatients() {
 
                 if (adminMessage) {
                     const emailResponse = await fetch(
-                        `http://localhost:4000/appointments/delete/send-email`,
+                        `https://easymedi-backend.vercel.app/appointments/delete/send-email`,
                         {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },

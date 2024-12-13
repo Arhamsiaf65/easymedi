@@ -11,7 +11,7 @@ export const DoctorsProvider = ({ children }) => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/doctors');
+      const response = await fetch('https://easymedi-backend.vercel.app/doctors');
       
       if (!response.ok) {
         throw new Error(`Failed to fetch doctors. Status: ${response.status}`);
@@ -30,7 +30,7 @@ export const DoctorsProvider = ({ children }) => {
 
   const deleteFromLast = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/doctors/del-end`, {
+      const response = await fetch(`https://easymedi-backend.vercel.app/doctors/del-end`, {
         method: 'DELETE',
       });
   
@@ -60,7 +60,7 @@ export const DoctorsProvider = ({ children }) => {
 
   const deleteFromStart = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/doctors/del-start`, {
+      const response = await fetch(`https://easymedi-backend.vercel.app/doctors/del-start`, {
         method: 'DELETE',
       });
   
@@ -94,7 +94,7 @@ export const DoctorsProvider = ({ children }) => {
 
   const addDoctor = async (newDoctor) => {
     try {
-      const response = await fetch('http://localhost:4000/doctors/add', {
+      const response = await fetch('https://easymedi-backend.vercel.app/doctors/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newDoctor),
@@ -122,7 +122,7 @@ export const DoctorsProvider = ({ children }) => {
 
   const deleteDoctor = async (doctorId) => {
     try {
-      const response = await fetch(`http://localhost:4000/doctors/del/${doctorId}`, {
+      const response = await fetch(`https://easymedi-backend.vercel.app/doctors/del/${doctorId}`, {
         method: 'DELETE',
       });
 

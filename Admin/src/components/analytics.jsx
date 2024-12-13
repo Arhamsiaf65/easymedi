@@ -13,7 +13,7 @@ function Analytics() {
 
   const getDoctors = async () => {
     try {
-      const req = await fetch('http://localhost:4000/doctors/');
+      const req = await fetch('https://easymedi-backend.vercel.app/doctors/');
       const response = await req.json();
       setDoctors(response.doctorsList);
 
@@ -28,7 +28,7 @@ function Analytics() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:4000/appointments/patient/appointments');
+      const response = await fetch('https://easymedi-backend.vercel.app/appointments/patient/appointments');
       const data = await response.json();
 
       const validAppointments = (data?.appointments?.arr || [])

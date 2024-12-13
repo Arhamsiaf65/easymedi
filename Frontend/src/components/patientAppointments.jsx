@@ -17,7 +17,7 @@ function AppointmentItem({ appointment, onDelete }) {
                 date: appointment.date,
             });
 
-            const response = await fetch(`http://localhost:4000/appointments/delete?${queryParams.toString()}`, {
+            const response = await fetch(`https://easymedi-backend.vercel.app/appointments/delete?${queryParams.toString()}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

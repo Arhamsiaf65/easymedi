@@ -24,7 +24,7 @@ function AppointmentsQueue() {
 
   const getAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:4000/appointments/patient/appointments', {
+      const response = await fetch('https://easymedi-backend.vercel.app/appointments/patient/appointments', {
         method: 'GET',
         headers: {
           Accept: 'application/json',

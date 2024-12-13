@@ -57,7 +57,7 @@ function Form() {
   useEffect(() => {
     const getDoctors = async () => {
       try {
-        const req = await fetch('http://localhost:4000/doctors/');
+        const req = await fetch('https://easymedi-backend.vercel.app/doctors/');
         const response = await req.json();
         setDoctors(response.doctorsList);
         const specializationsList = [...new Set(response.doctorsList.map(doc => doc.specialization))];
@@ -151,7 +151,7 @@ function Form() {
     try {
 
       console.log(formData);
-      const response = await fetch('http://localhost:4000/appointments/add', {
+      const response = await fetch('https://easymedi-backend.vercel.app/appointments/add', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

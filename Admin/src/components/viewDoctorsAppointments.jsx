@@ -6,7 +6,7 @@ function ViewAppointments({ doctorId }) {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/appointments/doctor/${doctorId}`);
+        const response = await fetch(`https://easymedi-backend.vercel.app/appointments/doctor/${doctorId}`);
         const data = await response.json();
         setAppointments(data.appointments || []);
       } catch (err) {

@@ -10,7 +10,7 @@ function ManageDoctors() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await fetch('http://localhost:4000/doctors');
+        const response = await fetch('https://easymedi-backend.vercel.app/doctors');
         if (!response.ok) {
           throw new Error('Failed to fetch doctors');
         }

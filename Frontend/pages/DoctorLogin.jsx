@@ -7,7 +7,7 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 const verifyDoctor = async (id) => {
     try {
       console.log("fetching with id", id);
-      const response = await fetch('http://localhost:4000/doctors/find', {
+      const response = await fetch('https://easymedi-backend.vercel.app/doctors/find', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

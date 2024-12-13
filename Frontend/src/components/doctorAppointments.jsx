@@ -10,7 +10,7 @@ function DoctorsAppointments() {
 
     const getDoctorsId = async () => {
         try {
-            const response = await fetch('http://localhost:4000/doctors/', {
+            const response = await fetch('https://easymedi-backend.vercel.app/doctors/', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

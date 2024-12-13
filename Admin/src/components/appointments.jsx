@@ -9,7 +9,7 @@ function Appointments() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:4000/appointments/');
+      const response = await fetch('https://easymedi-backend.vercel.app/appointments/');
       const data = await response.json();
       const validAppointments = (data?.appointments?.arr || [])
         .filter((appointment) => appointment && appointment.patient)
