@@ -55,7 +55,10 @@ function Form() {
     const getDoctors = async () => {
       setIsLoading(true);
       try {
-        const req = await fetch('https://easymedi-backend.vercel.app/doctors');
+        const req = await fetch('https://easymedi-backend.vercel.app/doctors', 
+       { method: 'GET',
+        mode: 'no-cors'}
+        );
         const response = await req.json();
         setDoctors(response.doctorsList);
         const specializationsList = [...new Set(response.doctorsList.map(doc => doc.specialization))];
