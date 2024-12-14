@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useLogin } from '../../context/loginContext';
+import { useNavigate } from 'react-router-dom';
 
 const SanSarif = styled.div`
   font-family: "Quicksand", sans-serif;
@@ -24,8 +25,10 @@ function Form() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [doctorSelectionMessage, setDoctorSelectionMessage] = useState('');
   const dateRef = useRef();
   const submitBtnRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedDoctor && dateRef.current) {
@@ -52,13 +55,14 @@ function Form() {
     const getDoctors = async () => {
       setIsLoading(true);
       try {
-        const req = await fetch('https://easymedi-backend.vercel.app/doctors/');
+        const req = await fetch('https://easymedi-backend.vercel.app/doctors');
         const response = await req.json();
         setDoctors(response.doctorsList);
         const specializationsList = [...new Set(response.doctorsList.map(doc => doc.specialization))];
-        setSpecializations(specializationsList);
+        setSpecializations(specializationsList.length > 0 ? specializationsList : ['No specializations available']);
       } catch (error) {
         console.error(error);
+        setSpecializations(['No specializations available']);
       } finally {
         setIsLoading(false);
       }
@@ -72,7 +76,7 @@ function Form() {
     const newDate = new Date(newSelectedDate);
     const newDay = newDate.getDay();
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const times = selectedDoctor.slots[days[newDay]].filter(slot => slot.time && slot.available);
+    const times = selectedDoctor?.slots[days[newDay]].filter(slot => slot.time && slot.available) || [];
     setAvailableTimes(times);
     setSelectedDay(days[newDay]);
     if (times.length === 0) {
@@ -93,7 +97,7 @@ function Form() {
     setSelectedDay('');
     setAvailableTimes([]);
     setNoSlotsMessage('');
-
+    setDoctorSelectionMessage('');
     const filtered = doctors.filter(doc => doc.specialization === specialization);
     setFilteredDoctors(filtered);
   };
@@ -101,7 +105,13 @@ function Form() {
   const handleDoctorChange = (e) => {
     const selectedDocId = e.target.value;
     const doctor = filteredDoctors.find(doc => doc.id === selectedDocId);
+    if (!selectedSpecialization) {
+      setDoctorSelectionMessage('Please select a specialization first.');
+      setSelectedDoctor(null);
+      return;
+    }
     setSelectedDoctor(doctor || null);
+    setDoctorSelectionMessage('');
     setNoSlotsMessage('');
   };
 
@@ -118,6 +128,7 @@ function Form() {
 
     if (!user) {
       alert("Login first to add an appointment");
+      navigate('/login');
       return;
     }
 
@@ -161,16 +172,16 @@ function Form() {
   return (
     <SanSarif>
       <div className="flex items-center justify-center mt-24">
-      {isLoading ? (
-  <div className="text-center flex flex-col items-center justify-center">
-    <div className="w-16 h-16 flex items-center justify-center relative">
-      <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-0"></div>
-      <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-150"></div>
-      <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-300"></div>
-    </div>
-    <p className="mt-4 text-gray-600 text-lg">Loading data, please wait...</p>
-  </div>
-) : (
+        {isLoading ? (
+          <div className="text-center flex flex-col items-center justify-center">
+            <div className="w-16 h-16 flex items-center justify-center relative">
+              <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-0"></div>
+              <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-150"></div>
+              <div className="w-4 h-4 absolute bg-[#03A398] rounded-full animate-pulse delay-300"></div>
+            </div>
+            <p className="mt-4 text-gray-600 text-lg">Loading data, please wait...</p>
+          </div>
+        ) : (
           <form
             className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 border border-gray-200"
             onSubmit={handleSubmit}
@@ -226,59 +237,62 @@ function Form() {
                 className="block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
               >
                 <option value="">Select Specialization</option>
-                {specializations.map((specialization, index) => (
-                  <option key={index} value={specialization}>
-                    {specialization}
+                {specializations.length === 0 ? (
+                  <option value="">No specializations available</option>
+                ) : (
+                  specializations.map((spec, index) => (
+                    <option key={index} value={spec}>
+                      {spec}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+
+            {doctorSelectionMessage && (
+              <div className="mb-4 text-red-500 text-sm">{doctorSelectionMessage}</div>
+            )}
+
+            <div className="mb-4">
+              <label
+                htmlFor="doctor"
+                className="block uppercase tracking-wide text-gray-600 text-sm font-semibold mb-2"
+              >
+                Select Doctor
+              </label>
+              <select
+                id="doctor"
+                value={selectedDoctor ? selectedDoctor.id : ''}
+                onChange={handleDoctorChange}
+                disabled={!selectedSpecialization}
+                className="block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
+              >
+                <option value="">Select Doctor</option>
+                {filteredDoctors.map((doctor) => (
+                  <option key={doctor.id} value={doctor.id}>
+                    {doctor.doctorName}
                   </option>
                 ))}
               </select>
             </div>
 
-            {filteredDoctors.length > 0 && (
-              <div className="mb-4">
-                <label
-                  htmlFor="doctor"
-                  className="block uppercase tracking-wide text-gray-600 text-sm font-semibold mb-2"
-                >
-                  Select Doctor
-                </label>
-                <select
-                  id="doctor"
-                  value={selectedDoctor?.id || ''}
-                  onChange={handleDoctorChange}
-                  className="block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
-                >
-                  <option value="">Select Doctor</option>
-                  {filteredDoctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      {doctor.doctorName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {selectedDoctor && (
-              <div className="mb-4">
-                <label
-                  htmlFor="appointment-date"
-                  className="block uppercase tracking-wide text-gray-600 text-sm font-semibold mb-2"
-                >
-                  Select Appointment Date
-                </label>
-                <input
-                  ref={dateRef}
-                  id="appointment-date"
-                  type="date"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  className="block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
-                />
-                {noSlotsMessage && (
-                  <p className="text-red-500 text-sm">{noSlotsMessage}</p>
-                )}
-              </div>
-            )}
+            <div className="mb-4">
+              <label
+                htmlFor="appointment-date"
+                className="block uppercase tracking-wide text-gray-600 text-sm font-semibold mb-2"
+              >
+                Select Date
+              </label>
+              <input
+                id="appointment-date"
+                type="date"
+                ref={dateRef}
+                value={selectedDate}
+                onChange={handleDateChange}
+                className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
+              />
+              {noSlotsMessage && <p className="text-red-500 text-sm mt-2">{noSlotsMessage}</p>}
+            </div>
 
             {availableTimes.length > 0 && (
               <div className="mb-4">
@@ -286,7 +300,7 @@ function Form() {
                   htmlFor="appointment-time"
                   className="block uppercase tracking-wide text-gray-600 text-sm font-semibold mb-2"
                 >
-                  Select Appointment Time
+                  Select Time
                 </label>
                 <select
                   id="appointment-time"
@@ -295,24 +309,22 @@ function Form() {
                   className="block w-full bg-gray-100 text-gray-700 border border-gray-300 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:ring-2 focus:ring-[#03A398]"
                 >
                   <option value="">Select Time</option>
-                  {availableTimes.map((time, index) => (
-                    <option key={index} value={time.time}>
-                      {time.time}
+                  {availableTimes.map((slot, index) => (
+                    <option key={index} value={slot.time}>
+                      {slot.time}
                     </option>
                   ))}
                 </select>
               </div>
             )}
 
-            <div className="flex justify-center">
-              <button
-                ref={submitBtnRef}
-                type="submit"
-                className="bg-[#03A398] text-white py-3 px-6 rounded-lg hover:bg-[#028a76] focus:outline-none focus:ring-2 focus:ring-[#028a76] transition duration-200"
-              >
-                Book Appointment
-              </button>
-            </div>
+            <button
+              type="submit"
+              ref={submitBtnRef}
+              className="bg-[#03A398] text-white font-semibold py-3 px-6 rounded-lg w-full"
+            >
+              Book Appointment
+            </button>
           </form>
         )}
       </div>

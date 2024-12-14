@@ -3,6 +3,7 @@ import { useLogin } from "../context/loginContext";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import 'dotenv'
 
 // Styled Components
 const Container = styled.div`
@@ -12,25 +13,18 @@ const Container = styled.div`
   min-height: 100vh;
   background: url('https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?ga=GA1.2.266770536.1725950979&semt=ais_hybrid') center/cover no-repeat;
   padding: 0 20px;
-  @media (max-width: 768px) {
-    padding: 0 10px;
-  }
 `;
 
 const LoginBox = styled.div`
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 40px;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 400px;
   width: 100%;
-  @media (max-width: 768px) {
-    padding: 20px;
-    max-width: 90%;
-  }
 `;
 
 const Title = styled.h2`
@@ -38,9 +32,6 @@ const Title = styled.h2`
   margin-bottom: 20px;
   color: #333;
   text-align: center;
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
 `;
 
 const FooterText = styled.p`
@@ -48,39 +39,36 @@ const FooterText = styled.p`
   font-size: 0.9rem;
   color: #555;
   text-align: center;
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
-  }
 `;
 
-const StyledGoogleLogin = styled(GoogleLogin)`
-  width: 100%;
-  margin-top: 20px;
-  max-width: 320px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #4285f4;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  &:hover {
-    background-color: #357ae8;
-  }
-`;
+async function verifyDoctor(email) {
+  // Make sure to implement this function in your backend
+  const response = await fetch(`/api/verify-doctor?email=${email}`);
+  const data = await response.json();
+  return data.isDoctor; // assuming the API returns { isDoctor: true/false }
+}
 
 function GoogleSignIn() {
   const { login, setRole } = useLogin();
   const navigate = useNavigate();
 
-  const handleSuccess = (credentialResponse) => {
+  const handleSuccess = async (credentialResponse) => {
     if (credentialResponse.credential) {
-      const decodedUser = jwtDecode(credentialResponse.credential); 
+      const decodedUser = jwtDecode(credentialResponse.credential); // Decode the Google token
       login(decodedUser);
-      setRole("patient");
-      console.log("Google sign-in success", decodedUser);
-      navigate('/');
+
+      // Verify if the logged-in user is a doctor
+      const isDoctor = await verifyDoctor(decodedUser.email);
+
+      if (isDoctor) {
+        setRole("doctor");
+        console.log("Doctor sign-in success", decodedUser);
+        navigate('/doctor-dashboard'); // Redirect to the doctor dashboard
+      } else {
+        setRole("patient");
+        console.log("Patient sign-in success", decodedUser);
+        navigate('/'); // Redirect to the patient homepage
+      }
     }
   };
 
@@ -91,13 +79,14 @@ function GoogleSignIn() {
   return (
     <Container>
       <LoginBox>
-        <Title>Patient Login</Title>
-        <GoogleOAuthProvider clientId={'30449435071-r8fbkkj05du8grlde06td5ge5k16kn4u.apps.googleusercontent.com'}>
-          <StyledGoogleLogin
+        <Title>Login</Title>
+        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+          <GoogleLogin
             onSuccess={handleSuccess}
             onError={handleError}
           />
         </GoogleOAuthProvider>
+        <FooterText>Don't have an account? Sign up now!</FooterText>
       </LoginBox>
     </Container>
   );

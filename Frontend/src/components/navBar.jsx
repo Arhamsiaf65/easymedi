@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link as ScrollLink } from "react-scroll";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../../context/loginContext";
@@ -14,7 +13,6 @@ const SanSarif = styled.div`
 function NavBar() {
   const { user, logout } = useLogin();
   const [isOpen, setIsOpen] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
@@ -39,16 +37,7 @@ function NavBar() {
     if (user) {
       logout();
     } else {
-      setShowLoginModal(true);
-    }
-  };
-
-  const handleLoginSelection = (type) => {
-    setShowLoginModal(false);
-    if (type === "doctor") {
-      navigate("/login/doctor");
-    } else if (type === "patient") {
-      navigate("/login");
+      navigate("/login");  // Navigate to the login page
     }
   };
 
@@ -96,35 +85,6 @@ function NavBar() {
           </button>
         </div>
       </div>
-
-      {/* Modal for Login Selection */}
-      {showLoginModal && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg py-16 px-24 space-y-4 ">
-            <h2 className="text-xl  font-semibold text-gray-700">
-              Login as:
-            </h2>
-            <button
-              onClick={() => handleLoginSelection("doctor")}
-              className="block w-full text-[#03A398] hover:text-white border border-[#03A398] hover:bg-[#03A398] focus:ring-4 focus:outline-none focus:ring-[#03A398] font-medium rounded-lg text-xl px-5 py-2.5 text-center transition-colors duration-300 ease-in-out"
-            >
-              Doctor
-            </button>
-            <button
-              onClick={() => handleLoginSelection("patient")}
-              className="block w-full text-[#03A398] hover:text-white border border-[#03A398] hover:bg-[#03A398] focus:ring-4 focus:outline-none focus:ring-[#03A398] font-medium rounded-lg text-xl px-5 py-2.5 text-center transition-colors duration-300 ease-in-out"
-            >
-              Patient
-            </button>
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className="block w-full text-gray-600 hover:text-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-300 ease-in-out"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </SanSarif>
   );
 }

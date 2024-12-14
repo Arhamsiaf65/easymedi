@@ -1,29 +1,48 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
+// Create a context for managing login state
 const LoginContext = createContext();
 
+export const useLogin = () => {
+  return useContext(LoginContext);
+};
+
 export const LoginProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // `user` state to hold user data
-  const [role, setRole] = useState(null);
-  const login = (userData) => {
-    setUser(userData); // Set user data
-    localStorage.setItem('user', JSON.stringify(userData)); // Optionally save user data to localStorage
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState('');
+
+  // Check if there are existing cookies on initial load
+  useEffect(() => {
+    const storedUser = Cookies.get('user');
+    const storedRole = Cookies.get('role');
+    
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, []);
+
+  const login = (userData, userRole) => {
+    setUser(userData);
+    setRole(userRole);
+    Cookies.set('user', JSON.stringify(userData), { expires: 7 }); // Set cookie for 7 days
+    Cookies.set('role', userRole, { expires: 7 }); // Set role cookie for 7 days
   };
 
   const logout = () => {
-    setUser(null); // Clear user data
-    localStorage.removeItem('user'); // Optionally clear user data from localStorage
+    setUser(null);
+    setRole('');
+    Cookies.remove('user');
+    Cookies.remove('role');
   };
 
-  // `user` state and login functions will be accessible via context
   return (
-    <LoginContext.Provider value={{ user, isAuthenticated: !!user, login, logout, role, setRole }}>
+    <LoginContext.Provider value={{ user, login, logout, role, setRole }}>
       {children}
     </LoginContext.Provider>
   );
-};
-
-// Custom hook to use the LoginContext
-export const useLogin = () => {
-  return useContext(LoginContext);
 };
