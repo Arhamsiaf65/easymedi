@@ -16,6 +16,7 @@ const io = new Server(server, {
       'http://localhost:5173',
       'http://localhost:5174',
       'https://easymedi.vercel.app',
+      'https://easymedi.vercel.app/doctors',
       'https://easymedi-admin.vercel.app'
     ],
     methods: ['GET', 'POST'],
