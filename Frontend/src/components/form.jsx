@@ -71,7 +71,9 @@ function Form() {
       }
     };
     getDoctors();
+    handleSpecializationChange();
   }, [login]);
+  
 
   const handleDateChange = (e) => {
     const newSelectedDate = e.target.value;
