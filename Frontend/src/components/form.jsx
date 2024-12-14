@@ -10,7 +10,7 @@ const SanSarif = styled.div`
 `;
 
 function Form() {
-  const { user, login, role } = useLogin();
+  const { user, login, getDoctors, getAppointments } = useLogin();
   const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
@@ -56,7 +56,6 @@ function Form() {
         const response = await req.json();
         setDoctors(response.doctorsList);
         const specializationsList = [...new Set(response.doctorsList.map(doc => doc.specialization))];
-        console.log(specializationsList);
         setSpecializations(specializationsList);
       } catch (error) {
         console.error(error);
