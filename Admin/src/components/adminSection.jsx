@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ManagePatients from './deleteAppointments';
 import Form from './addAppointment';
 import Analytics from './analytics';
@@ -13,19 +13,35 @@ function AdminSection() {
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        // Close the sidebar on mobile after a selection
         if (window.innerWidth < 1024) {
             setSidebarOpen(false);
         }
     };
 
+    // Lock body scroll when sidebar is open on mobile
+    useEffect(() => {
+        if (sidebarOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto'; // Cleanup on component unmount
+        };
+    }, [sidebarOpen]);
+
     return (
         <div className="flex min-h-screen bg-gray-100 overflow-x-hidden">
             {/* Sidebar */}
-            <aside className={`lg:w-64 w-full bg-gray-900 text-white flex flex-col fixed top-0 bottom-0 lg:left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform ease-in-out duration-300`}>
+            <aside className={`lg:w-64 w-full h-screen bg-gray-900 text-white flex flex-col fixed top-0 bottom-0 lg:left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform ease-in-out duration-300 z-50`}>
                 <div className="p-4 text-center text-xl font-bold border-b border-gray-700">
                     Admin Panel
                 </div>
+
+                {/* Horizontal separator (--- bar) */}
+                <div className="border-b border-gray-600 my-2"></div> {/* This adds the separator bar */}
+
                 <nav className="flex-1 p-4">
                     <ul className="space-y-4">
                         <li
@@ -78,16 +94,12 @@ function AdminSection() {
                 </button>
             </div>
 
-            {/* Main Content */}
-            <main className="flex-1 ml-0 lg:ml-64 p-6 overflow-x-hidden">
-
-                {/* Content based on activeTab */}
+            <main className={`flex-1 ml-0 lg:ml-64 p-6 overflow-x-hidden ${sidebarOpen ? 'lg:ml-64' : ''}`}>
                 <div className="bg-white p-6 shadow-md rounded-lg">
                     {activeTab === 'dashboard' && (
                         <div>
                             <DashBoard />
                         </div>
-
                     )}
                     {activeTab === 'doctors' && (
                         <div>

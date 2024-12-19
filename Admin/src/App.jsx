@@ -49,7 +49,7 @@ const SignIn = ({ handleLogin, email, setEmail, password, setPassword }) => (
 // );
 
 function App() {
-  const [user, setUser] = useState(null); // User state to track if logged in
+  const [user, setUser] = useState(null); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

@@ -40,11 +40,15 @@ function DeleteDoctor() {
           <option value="" disabled>
             -- Select a doctor --
           </option>
-          {(doctors?.doctorsList?.length > 0 ? doctors.doctorsList : []).map((doctor) => (
-            <option key={doctor.id} value={doctor.id}>
-              {doctor.doctorName}
-            </option>
-          ))}
+          {Array.isArray(doctors) && doctors.length > 0 ? (
+  doctors.map((doctor) => (
+    <option key={doctor.id} value={doctor.id}>
+      {doctor.doctorName}
+    </option>
+  ))  
+) : (
+  <option disabled>No doctors available</option>
+)}
         </select>
       </div>
 

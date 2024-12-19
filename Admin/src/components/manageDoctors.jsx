@@ -65,9 +65,9 @@ function ManageDoctors() {
 
       {/* Conditional Content Based on Selected Action */}
       <div className="action-content">
-        {selectedAction === 'add' && <AddDoctor setDoctors={setDoctors} />}
-        {selectedAction === 'delete' && <DeleteDoctor doctors={doctors} setDoctors={setDoctors} />}
-        {selectedAction === 'view' && <ViewDoctors doctors={doctors} />}
+        {selectedAction === 'add' && <AddDoctor/>}
+        {selectedAction === 'delete' && <DeleteDoctor/>}
+        {selectedAction === 'view' && <ViewDoctors/>}
       </div>
     </div>
   );
