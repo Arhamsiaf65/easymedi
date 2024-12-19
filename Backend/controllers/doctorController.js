@@ -160,7 +160,6 @@ const showAvailableSlots = async (req, res) => {
       });
     }
 
-    // Gather available slots for each day
     const availableSlotsByDay = {};
     for (const [day, slots] of Object.entries(doctor.slots)) {
       availableSlotsByDay[day] = slots.filter((slot) => slot.available === true);

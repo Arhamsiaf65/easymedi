@@ -144,7 +144,7 @@ function AddDoctor() {
             <h3 className="text-xl sm:text-lg font-semibold mb-4">
               Configure Weekly Slots
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {Object.keys(newDoctor.slots).map((day) => (
                 <div key={day} className="text-center">
                   <h4
@@ -158,7 +158,7 @@ function AddDoctor() {
                       {newDoctor.slots[day].map((slot, index) => (
                         <div
                           key={index}
-                          className={`p-2 border rounded-md text-center cursor-pointer transition-all ${
+                          className={`p-2 w-full  flex flex-wrap justify-center items-center border rounded-md text-center cursor-pointer transition-all ${
                             slot.available ? 'bg-green-200 hover:bg-green-300' : 'bg-red-200 hover:bg-red-300'
                           }`}
                           onClick={() => handleSlotToggle(day, index)}
