@@ -1,6 +1,6 @@
 import LinkedList from "../dataStructures/linkedList.js";
 import doctorsModel from "../models/doctorModel.js";
-
+import { deleteAppointmentsOfDoctor } from "./appointmentContoller.js";
 let doctorsList = new LinkedList();
 
 const loadDoctorsFromDB = async () => {
@@ -190,12 +190,13 @@ const deleteDoctorFromStart = async (req, res) => {
       });
     }
 
-    const removedDoctor = doctorsList.removeFromStart(); 
+    const toRemove = doctorsList.firstElement(); 
+    deleteAppointmentsOfDoctor(toRemove.id);
     await saveDoctorsToDB();
     return res.status(200).json({
       success: true,
-      message: "Doctor removed from the start successfully.",
-      removedDoctor,
+      toRemove: toRemove,
+      message: "Doctor removed from successfully.",
     });
   } catch (error) {
     console.error("Error removing doctor from start:", error);
@@ -218,13 +219,14 @@ const deleteDoctorFromEnd = async (req, res) => {
       });
     }
 
-    const removedDoctor = doctorsList.removeFromEnd(); // Remove from end
-    await saveDoctorsToDB(); // Update the database
+    const removedDoctor = doctorsList.removeFromEnd(); 
+    deleteAppointmentsOfDoctor(removedDoctor.id);
+    await saveDoctorsToDB();
 
     return res.status(200).json({
       success: true,
       message: "Doctor removed from the end successfully.",
-      removedDoctor,
+      removedDoctor: removedDoctor.id,
     });
   } catch (error) {
     console.error("Error removing doctor from end:", error);

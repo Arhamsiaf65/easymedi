@@ -97,6 +97,17 @@ class LinkedList {
         }
     }
     
+    firstElement(){
+        return this.head.data;
+    }
+
+    lastElement(){
+        let tempHead = this.head;
+        while(tempHead.next != null){
+            tempHead = tempHead.next;
+        }
+        return tempHead.data;
+    }
 
     print(){
         let headCopy = this.head;
@@ -108,27 +119,6 @@ class LinkedList {
     }
 }
 
-//  const l = new LinkedList();
-//  l.addAtStart({
-//     "doctorName": "Dr Muaz",
-//     "id": 1234
-//  })
-
-//  l.addAtStart({
-//     "doctorName": "Dr ALi",
-//     "id": 123
-//  }) 
-//  l.addAtStart({
-//     "doctorName": "Dr Salman",
-//     "id": 12
-//  })
-
-//  l.print();
-
-//  l.remove(1234);
-//  console.log("removed" );
-
-//  l.print();
 
  
 export default LinkedList
