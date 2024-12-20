@@ -137,35 +137,20 @@ const addAppointment = async (req, res) => {
 
 const deleteAppointmentsOfDoctor = async (doctorId) => {
   try {
+    console.log("doctorID in delete Doctor",doctorId);
     if (!doctorId) {
       throw new Error("Doctor ID is required.");
     }
 
-    // Load the current queue from the database
     await loadQueueFromDB();
-
-    // Filter out all appointments associated with the doctor
+    console.log("appointments Queue", appointmentsQueue);
     const updatedQueue = appointmentsQueue.arr.filter(
       (appointment) => appointment && appointment.doctorId !== doctorId
     );
 
-    // Update the queue in memory
     appointmentsQueue.arr = updatedQueue;
 
-    // Update the doctor's availability slots
-    const doctor = await findDoctorById(doctorId);
-    if (doctor && doctor.slots) {
-      Object.keys(doctor.slots).forEach((day) => {
-        doctor.slots[day].forEach((slot) => {
-          if (!slot.available) {
-            slot.available = true; // Mark all slots as available
-          }
-        });
-      });
-      await saveDoctorsToDB(); // Save updated doctor data
-    }
-
-    // Save the updated queue to the database
+ 
     await saveQueueToDB();
 
     console.log(`All appointments for Doctor ID ${doctorId} have been deleted.`);
