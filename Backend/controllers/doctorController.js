@@ -183,6 +183,7 @@ const showAvailableSlots = async (req, res) => {
 const deleteDoctorFromStart = async (req, res) => {
   try {
     await loadDoctorsFromDB();
+
     if (doctorsList.isEmpty()) {
       return res.status(404).json({
         success: false,
@@ -191,12 +192,17 @@ const deleteDoctorFromStart = async (req, res) => {
     }
 
     const toRemove = doctorsList.firstElement(); 
-    deleteAppointmentsOfDoctor(toRemove.id);
+
+    // Wait for appointment deletion to complete
+    await deleteAppointmentsOfDoctor(toRemove.id);
+
+    // Save updated doctors list
     await saveDoctorsToDB();
+
     return res.status(200).json({
       success: true,
       toRemove: toRemove,
-      message: "Doctor removed from successfully.",
+      message: "Doctor removed successfully.",
     });
   } catch (error) {
     console.error("Error removing doctor from start:", error);
@@ -207,6 +213,7 @@ const deleteDoctorFromStart = async (req, res) => {
     });
   }
 };
+
 
 const deleteDoctorFromEnd = async (req, res) => {
   try {
@@ -220,7 +227,7 @@ const deleteDoctorFromEnd = async (req, res) => {
     }
 
     const removedDoctor = doctorsList.removeFromEnd(); 
-    deleteAppointmentsOfDoctor(removedDoctor.id);
+    await deleteAppointmentsOfDoctor(removedDoctor.id);
     await saveDoctorsToDB();
 
     return res.status(200).json({

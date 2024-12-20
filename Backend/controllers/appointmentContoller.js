@@ -137,35 +137,28 @@ const addAppointment = async (req, res) => {
 
 const deleteAppointmentsOfDoctor = async (doctorId) => {
   try {
-    console.log("doctorID in delete Doctor",doctorId);
     if (!doctorId) {
       throw new Error("Doctor ID is required.");
     }
 
+    
     await loadQueueFromDB();
-    console.log("appointments Queue", appointmentsQueue);
     const updatedQueue = appointmentsQueue.arr.filter(
       (appointment) => appointment && appointment.doctorId !== doctorId
     );
 
     appointmentsQueue.arr = updatedQueue;
-
- 
+    // appointmentsQueue.size = updatedQueue.length; 
     await saveQueueToDB();
 
-    console.log(`All appointments for Doctor ID ${doctorId} have been deleted.`);
-    return {
-      success: true,
-      message: `All appointments for Doctor ID ${doctorId} have been successfully deleted.`,
-    };
+    console.log(`Appointments for doctor ID ${doctorId} deleted successfully.`);
   } catch (error) {
-    console.error(`Error deleting appointments for Doctor ID ${doctorId}:`, error);
-    return {
-      success: false,
-      message: `Failed to delete appointments for Doctor ID ${doctorId}.`,
-    };
+    console.error("Error in deleteAppointmentsOfDoctor:", error);
+    throw error; 
   }
 };
+
+
 
 
 const retrieveAppointments = async (req, res) => {
