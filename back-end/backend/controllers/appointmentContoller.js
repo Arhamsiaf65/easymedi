@@ -135,6 +135,7 @@ const addAppointment = async (req, res) => {
   }
 };
 
+
 const deleteAppointmentsOfDoctor = async (doctorId) => {
   try {
     if (!doctorId) {
@@ -159,8 +160,6 @@ const deleteAppointmentsOfDoctor = async (doctorId) => {
 };
 
 
-
-
 const retrieveAppointments = async (req, res) => {
   try {
     await loadQueueFromDB();
@@ -181,6 +180,7 @@ const cancelAppointment = async (req, res) => {
   try {
     const { doctorId, day, time, date } = req.query;
 
+    // Validate required fields
     if (!date || !doctorId || !day || !time) {
       return res.json({
         success: false,
@@ -277,51 +277,6 @@ const bookedAppointments = async (req, res) => {
   }
 }
 
-const cancelAllAppointments = async (req, res) => {
-  try {
-    // Load the current appointments queue from the database
-    await loadQueueFromDB();
-
-    // Iterate through all appointments to mark slots as available for respective doctors
-    for (const appointment of appointmentsQueue.arr) {
-      if (appointment && appointment.doctorId && appointment.day && appointment.time) {
-        const doctor = await findDoctorById(appointment.doctorId);
-        if (doctor && doctor.slots) {
-          const slotsOfDay = doctor.slots[appointment.day];
-          const slotIndex = slotsOfDay.findIndex(slot => slot.time === appointment.time);
-
-          if (slotIndex !== -1) {
-            doctor.slots[appointment.day][slotIndex].available = true;
-          }
-        }
-      }
-    }
-
-    // Save updated doctor data to the database
-    await saveDoctorsToDB();
-
-    // Clear the appointments queue
-    appointmentsQueue = new Queue();
-
-    // Save the empty queue to the database
-    await saveQueueToDB();
-
-    // Respond with success
-    return res.json({
-      success: true,
-      message: "All appointments have been canceled successfully.",
-    });
-  } catch (error) {
-    console.error("Error canceling all appointments:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to cancel all appointments due to a server error.",
-    });
-  }
-};
-
-
-
 const doctorBookedAppointments = async (req, res) => {
   try {
     await loadQueueFromDB();
@@ -335,4 +290,4 @@ const doctorBookedAppointments = async (req, res) => {
   }
 }
 
-export { addAppointment, deleteAppointmentsOfDoctor,retrieveAppointments, bookedAppointments,doctorBookedAppointments, cancelAppointment , cancelAllAppointments};
+export { addAppointment, retrieveAppointments, bookedAppointments,doctorBookedAppointments, cancelAppointment };
