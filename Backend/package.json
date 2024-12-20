@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "15.0.1",
-    "postcss": "^8"
+    "eslint-config-next": "15.0.1"
   }
 }
