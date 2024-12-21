@@ -5,6 +5,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
   const [animateButton, setAnimateButton] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emoji, setEmoji] = useState("");
+  const [showLoginButton, setShowLoginButton] = useState(true); // New state for showing login button
 
   const resetState = () => {
     setShowWarning(false);
@@ -28,6 +29,9 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
     // Reset the state immediately before handling the submission
     resetState();
 
+    // Disable the login button and show the warning initially
+    setShowLoginButton(false);
+
     // Simulate a delay before handling the submission result
     if (!email || !password) {
       setErrorMessage("Oops! Did you forget something?");
@@ -37,6 +41,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
       setTimeout(() => {
         setAnimateButton(false);
         resetState();  // Reset after 2 seconds
+        setShowLoginButton(true);  // Show the login button again
       }, 2000);
 
       return;
@@ -54,6 +59,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
       setTimeout(() => {
         setAnimateButton(false);
         resetState();  // Reset after 2 seconds
+        setShowLoginButton(true);  // Show the login button again
       }, 2000);
     }
 
@@ -98,13 +104,17 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
                 />
                 <p className="mt-2 text-center text-red-600">Bro! Can't see your credentials</p>
               </>
-            ) : (
+            ) : showLoginButton ? (
               <button
                 type="submit"
                 className={`py-3 px-6 text-white font-semibold rounded-lg shadow-md bg-teal-600 hover:bg-teal-700 focus:outline-none transition-transform transform ${animateButton ? "animate-shake" : "hover:scale-105"}`}
               >
                 {animateButton ? "Oops! 🤪" : "Login"}
               </button>
+            ) : (
+              <div className="py-3 px-6 text-white font-semibold rounded-lg bg-teal-600 opacity-50">
+                Login
+              </div>
             )}
           </div>
         </form>
