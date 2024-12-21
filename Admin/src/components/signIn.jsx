@@ -5,7 +5,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
   const [animateButton, setAnimateButton] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emoji, setEmoji] = useState("");
-  
+
   const resetState = () => {
     setShowWarning(false);
     setErrorMessage("");
@@ -24,14 +24,21 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Reset the state immediately before handling the submission
     resetState();
 
+    // Simulate a delay before handling the submission result
     if (!email || !password) {
       setErrorMessage("Oops! Did you forget something?");
       setEmoji("🤔");
       setAnimateButton(true);
-      setTimeout(() => setAnimateButton(false), 2000);
-      setTimeout(resetState, 2000);  // Reset error and warning after 2 seconds
+
+      setTimeout(() => {
+        setAnimateButton(false);
+        resetState();  // Reset after 2 seconds
+      }, 2000);
+
       return;
     }
 
@@ -43,8 +50,11 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
       setErrorMessage("Oops! Wrong credentials. Try again!");
       setEmoji("😬");
       setAnimateButton(true);
-      setTimeout(() => setAnimateButton(false), 2000);
-      setTimeout(resetState, 2000);  // Reset error and warning after 2 seconds
+
+      setTimeout(() => {
+        setAnimateButton(false);
+        resetState();  // Reset after 2 seconds
+      }, 2000);
     }
   };
 
