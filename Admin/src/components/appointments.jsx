@@ -3,8 +3,8 @@ import AppointmentsQueue from './appointmentsQueue';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState(null); 
-  const [isLoading, setIsLoading] = useState(true);  // To handle loading state
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // To handle loading state
   const [error, setError] = useState(null); // To handle errors
 
   const fetchAppointments = async () => {
@@ -15,15 +15,15 @@ function Appointments() {
         .filter((appointment) => appointment && appointment.patient)
         .reverse();
       setAppointments(validAppointments);
-      setIsLoading(false);  // Set loading to false after data is fetched
+      setIsLoading(false); // Set loading to false after data is fetched
     } catch (err) {
       setError('Failed to fetch appointments');
-      setIsLoading(false);  // Set loading to false on error
+      setIsLoading(false); // Set loading to false on error
     }
   };
 
   const handleAppointmentClick = (appointment) => {
-    setSelectedAppointment(appointment);  // Highlight selected appointment
+    setSelectedAppointment(appointment); // Highlight selected appointment
   };
 
   // Fetch appointments when component is mounted
@@ -34,7 +34,33 @@ function Appointments() {
   return (
     <>
       {isLoading ? (
-        <div className="text-center">Loading appointments...</div> // Loading message
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 px-4 py-2">Patient Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Contact</th>
+                  <th className="border border-gray-300 px-4 py-2">Doctor</th>
+                  <th className="border border-gray-300 px-4 py-2">Date</th>
+                  <th className="border border-gray-300 px-4 py-2">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <tr key={index} className="animate-pulse">
+                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
+                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
+                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
+                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
+                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       ) : error ? (
         <div className="text-center text-red-500">{error}</div> // Error message
       ) : (
