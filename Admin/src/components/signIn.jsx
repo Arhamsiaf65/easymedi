@@ -56,6 +56,11 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
         resetState();  // Reset after 2 seconds
       }, 2000);
     }
+
+    // Reset warning after 2 seconds in both cases
+    setTimeout(() => {
+      setShowWarning(false);
+    }, 2000);
   };
 
   return (
