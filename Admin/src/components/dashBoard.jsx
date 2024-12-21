@@ -44,7 +44,21 @@ function DashBoard() {
   );
 
   if (loading) {
-    return <div className="text-center mt-10">Loading data, please wait...</div>;
+    return (
+      <div className="container mx-auto p-6">
+        <h1 className="text-4xl font-extrabold text-center text-teal-600 mb-12">Admin Dashboard</h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+          <SkeletonLoader />
+          <SkeletonLoader />
+          <SkeletonLoader />
+        </div>
+
+        <SkeletonLoader />
+        <SkeletonLoader />
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   if (error) {
@@ -138,5 +152,15 @@ function DashBoard() {
     </div>
   );
 }
+
+const SkeletonLoader = () => {
+  return (
+    <div className="bg-white shadow-lg rounded-lg p-6 animate-pulse">
+      <div className="h-6 bg-teal-200 rounded w-3/4 mb-4"></div>
+      <div className="h-10 bg-teal-200 rounded w-1/2 mb-2"></div>
+      <div className="h-6 bg-teal-200 rounded w-4/5"></div>
+    </div>
+  );
+};
 
 export default DashBoard;
