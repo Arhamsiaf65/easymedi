@@ -36,29 +36,14 @@ function Appointments() {
       {isLoading ? (
         <div className="mt-10">
           <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="border border-gray-300 px-4 py-2">Patient Name</th>
-                  <th className="border border-gray-300 px-4 py-2">Contact</th>
-                  <th className="border border-gray-300 px-4 py-2">Doctor</th>
-                  <th className="border border-gray-300 px-4 py-2">Date</th>
-                  <th className="border border-gray-300 px-4 py-2">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <tr key={index} className="animate-pulse">
-                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
-                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
-                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
-                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
-                    <td className="border border-gray-300 px-4 py-2 bg-gray-300 h-8"></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="space-y-4">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="animate-pulse flex space-x-4 p-4 border rounded-md shadow-md bg-gray-100">
+                <div className="bg-gray-300 h-12 w-1/4 rounded-md"></div>
+                <div className="bg-gray-300 h-12 w-1/4 rounded-md"></div>
+                <div className="bg-gray-300 h-12 w-1/4 rounded-md"></div>
+              </div>
+            ))}
           </div>
         </div>
       ) : error ? (
@@ -70,37 +55,36 @@ function Appointments() {
             onAppointmentClick={handleAppointmentClick} 
           />
   
-          {/* Appointments Table */}
+          {/* Card Layout for Appointments */}
           <div className="mt-10">
             <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
             {appointments.length > 0 ? (
-              <div className="overflow-x-auto"> {/* Make the table horizontally scrollable */}
-                <table className="table-auto w-full border-collapse border border-gray-300">
-                  <thead>
-                    <tr className="bg-gray-200">
-                      <th className="border border-gray-300 px-4 py-2">Patient Name</th>
-                      <th className="border border-gray-300 px-4 py-2">Contact</th>
-                      <th className="border border-gray-300 px-4 py-2">Doctor</th>
-                      <th className="border border-gray-300 px-4 py-2">Date</th>
-                      <th className="border border-gray-300 px-4 py-2">Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {appointments.map((appointment, index) => (
-                      <tr
-                        key={index}
-                        className={`hover:bg-gray-100 ${selectedAppointment === appointment ? 'bg-blue-200' : ''}`}
-                        onClick={() => handleAppointmentClick(appointment)} // Highlight the selected row
-                      >
-                        <td className="border border-gray-300 px-4 py-2">{appointment.patient.patientFirstName}</td>
-                        <td className="border border-gray-300 px-4 py-2">{appointment.patient.patientContact}</td>
-                        <td className="border border-gray-300 px-4 py-2">{appointment.doctorName}</td>
-                        <td className="border border-gray-300 px-4 py-2">{appointment.date}</td>
-                        <td className="border border-gray-300 px-4 py-2">{appointment.time}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="space-y-4">
+                {appointments.map((appointment, index) => (
+                  <div
+                    key={index}
+                    className={`p-4 border rounded-md shadow-md hover:bg-gray-100 cursor-pointer ${
+                      selectedAppointment === appointment ? 'bg-blue-100' : ''
+                    }`}
+                    onClick={() => handleAppointmentClick(appointment)}
+                  >
+                    <div className="font-semibold text-lg">
+                      {appointment.patient.patientFirstName} - {appointment.patient.patientLastName}
+                    </div>
+                    <div className="text-gray-600">
+                      Contact: {appointment.patient.patientContact}
+                    </div>
+                    <div className="text-gray-600">
+                      Doctor: {appointment.doctorName}
+                    </div>
+                    <div className="text-gray-600">
+                      Date: {appointment.date}
+                    </div>
+                    <div className="text-gray-600">
+                      Time: {appointment.time}
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <p className="text-gray-700">No appointments available.</p>
