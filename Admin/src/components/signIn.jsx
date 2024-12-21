@@ -9,6 +9,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
   const handleMouseEnter = () => {
     if (!email || !password) {
       setShowWarning(true);
+      setTimeout(() => setShowWarning(false), 2000); // Hides the warning after 2 seconds
     }
   };
 
@@ -65,14 +66,9 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
             onMouseLeave={handleMouseLeave}
           >
             {showWarning ? (
-              <>
-                <img
-                  src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBlcnlyOXMxM2x3Mm1sZzB3cjV0NWN5cnluYzR5czM2eWN3dm9kZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/de9SDw6PGRsubN1o3X/giphy.webp"
-                  alt="Funny GIF"
-                  className="w-16 h-16 rounded-full animate-bounce transition-opacity duration-500 opacity-100"
-                />
-                <p className="mt-2 text-center text-red-600">Bro! Can't see your credentials</p>
-              </>
+              <p className="mt-2 text-center text-red-600 transition-opacity duration-500">
+                Please provide your credentials!
+              </p>
             ) : (
               <button
                 type="submit"
