@@ -5,11 +5,16 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
   const [animateButton, setAnimateButton] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emoji, setEmoji] = useState("");
+  
+  const resetState = () => {
+    setShowWarning(false);
+    setErrorMessage("");
+    setEmoji("");
+  };
 
   const handleMouseEnter = () => {
     if (!email || !password) {
       setShowWarning(true);
-      setTimeout(() => setShowWarning(false), 2000); // Hides the warning after 2 seconds
     }
   };
 
@@ -19,11 +24,14 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    resetState();
+
     if (!email || !password) {
       setErrorMessage("Oops! Did you forget something?");
       setEmoji("🤔");
       setAnimateButton(true);
       setTimeout(() => setAnimateButton(false), 2000);
+      setTimeout(resetState, 2000);  // Reset error and warning after 2 seconds
       return;
     }
 
@@ -36,6 +44,7 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
       setEmoji("😬");
       setAnimateButton(true);
       setTimeout(() => setAnimateButton(false), 2000);
+      setTimeout(resetState, 2000);  // Reset error and warning after 2 seconds
     }
   };
 
@@ -66,15 +75,18 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
             onMouseLeave={handleMouseLeave}
           >
             {showWarning ? (
-              <p className="mt-2 text-center text-red-600 transition-opacity duration-500">
-                Please provide your credentials!
-              </p>
+              <>
+                <img
+                  src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHBlcnlyOXMxM2x3Mm1sZzB3cjV0NWN5cnluYzR5czM2eWN3dm9kZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/de9SDw6PGRsubN1o3X/giphy.webp"
+                  alt="Funny GIF"
+                  className="w-16 h-16 rounded-full animate-bounce transition-opacity duration-500 opacity-100"
+                />
+                <p className="mt-2 text-center text-red-600">Bro! Can't see your credentials</p>
+              </>
             ) : (
               <button
                 type="submit"
-                className={`py-3 px-6 text-white font-semibold rounded-lg shadow-md bg-teal-600 hover:bg-teal-700 focus:outline-none transition-transform transform ${
-                  animateButton ? "animate-shake" : "hover:scale-105"
-                }`}
+                className={`py-3 px-6 text-white font-semibold rounded-lg shadow-md bg-teal-600 hover:bg-teal-700 focus:outline-none transition-transform transform ${animateButton ? "animate-shake" : "hover:scale-105"}`}
               >
                 {animateButton ? "Oops! 🤪" : "Login"}
               </button>
