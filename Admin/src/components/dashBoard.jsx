@@ -54,7 +54,6 @@ function DashBoard() {
           Loading Dashboard...
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {/* Loading Cards for Doctors Section */}
           {Array(3)
             .fill(0)
             .map((_, index) => (
@@ -71,7 +70,6 @@ function DashBoard() {
         <div className="mt-12">
           <h2 className="text-2xl font-semibold text-teal-600 mb-4">Fetching Data...</h2>
           <div className="space-y-4">
-            {/* Loading Cards for Appointments Section */}
             {Array(5)
               .fill(0)
               .map((_, index) => (
@@ -108,19 +106,14 @@ function DashBoard() {
       <h1 className="text-4xl font-extrabold text-center text-teal-600 mb-12">Admin Dashboard</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-        {/* Total Doctors */}
         <div className="bg-white shadow-lg rounded-lg p-6 text-center">
           <h2 className="text-xl font-semibold text-gray-700">Total Doctors</h2>
           <p className="text-4xl font-bold text-teal-600">{doctors.length}</p>
         </div>
-
-        {/* Total Specializations */}
         <div className="bg-white shadow-lg rounded-lg p-6 text-center">
           <h2 className="text-xl font-semibold text-gray-700">Total Specializations</h2>
           <p className="text-4xl font-bold text-teal-600">{specializations.length}</p>
         </div>
-
-        {/* Total Appointments */}
         <div className="bg-white shadow-lg rounded-lg p-6 text-center">
           <h2 className="text-xl font-semibold text-gray-700">Total Appointments</h2>
           <p className="text-4xl font-bold text-teal-600">{appointments.length}</p>
