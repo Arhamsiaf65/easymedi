@@ -3,17 +3,17 @@ import { DoctorsContext } from '../../context/doctorsContext';
 
 function DashBoard() {
   const [appointments, setAppointments] = useState([]);
+  const [appointmentsLoading, setAppointmentsLoading] = useState(true);
   const [specializations, setSpecializations] = useState([]);
   const {
     doctors,
-    loading,
+    loading: doctorsLoading,
     error,
     clearError,
-    deleteFromLast,
-    deleteFromStart,
   } = useContext(DoctorsContext);
 
   const fetchAppointments = async () => {
+    setAppointmentsLoading(true);
     try {
       const response = await fetch('https://easymedi-backend.vercel.app/appointments');
       const data = await response.json();
@@ -23,8 +23,14 @@ function DashBoard() {
       setAppointments(validAppointments);
     } catch (err) {
       console.error('Failed to fetch appointments:', err);
+    } finally {
+      setAppointmentsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
 
   useEffect(() => {
     if (doctors.length) {
@@ -35,28 +41,50 @@ function DashBoard() {
     }
   }, [doctors]);
 
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
   const upcomingAppointments = appointments.filter(
     (appointment) => new Date(appointment.date) > new Date()
   );
 
-  if (loading) {
+  const isLoading = doctorsLoading || appointmentsLoading;
+
+  if (isLoading) {
     return (
       <div className="container mx-auto p-6">
-        <h1 className="text-4xl font-extrabold text-center text-teal-600 mb-12">Admin Dashboard</h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-          <SkeletonLoader />
-          <SkeletonLoader />
-          <SkeletonLoader />
+        <h1 className="text-4xl font-extrabold text-center text-teal-600 mb-12 animate-pulse">
+          Loading Dashboard...
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {/* Loading Cards for Doctors Section */}
+          {Array(3)
+            .fill(0)
+            .map((_, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-r from-teal-100 to-teal-300 rounded-lg shadow-md p-6 animate-pulse"
+              >
+                <div className="h-6 bg-teal-400 rounded w-3/4 mb-4"></div>
+                <div className="h-12 bg-teal-500 rounded w-1/2"></div>
+              </div>
+            ))}
         </div>
 
-        <SkeletonLoader />
-        <SkeletonLoader />
-        <SkeletonLoader />
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold text-teal-600 mb-4">Fetching Data...</h2>
+          <div className="space-y-4">
+            {/* Loading Cards for Appointments Section */}
+            {Array(5)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg shadow p-4 animate-pulse"
+                >
+                  <div className="h-6 bg-gray-400 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-500 rounded w-2/3"></div>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -109,7 +137,7 @@ function DashBoard() {
             return (
               <li key={index} className="flex justify-between items-center">
                 <span className="text-lg font-medium text-gray-800">{spec}</span>
-                <span className="text-lg font-semibold text-teal-600">{doctorsInSpec.length} Doctors</span>
+                <span className="text-lg font-semibold text-teal-600">{doctorsInSpec.length}</span>
               </li>
             );
           })}
@@ -152,15 +180,5 @@ function DashBoard() {
     </div>
   );
 }
-
-const SkeletonLoader = () => {
-  return (
-    <div className="bg-white shadow-lg rounded-lg p-6 animate-pulse">
-      <div className="h-6 bg-teal-200 rounded w-3/4 mb-4"></div>
-      <div className="h-10 bg-teal-200 rounded w-1/2 mb-2"></div>
-      <div className="h-6 bg-teal-200 rounded w-4/5"></div>
-    </div>
-  );
-};
 
 export default DashBoard;
