@@ -136,6 +136,7 @@ export const DoctorsProvider = ({ children }) => {
     <DoctorsContext.Provider
       value={{
         doctors,
+        fetchDoctors,
         setDoctors,
         loading,
         error,
