@@ -11,13 +11,14 @@ function DeleteDoctor() {
       setMessage('Please select a doctor to delete.');
       return;
     }
-
-    const success = await deleteDoctor(selectedDoctor);
-    if (success) {
-      setMessage('Doctor deleted successfully.');
-      setSelectedDoctor(null);
-    } else {
-      setMessage('Failed to delete doctor.');
+  
+    try {
+       await deleteDoctor(selectedDoctor);
+  
+      setMessage("Doctor deleted successfully.")
+    } catch (error) {
+      setMessage('An error occurred while deleting the doctor.');
+      console.error(error);
     }
   };
 
