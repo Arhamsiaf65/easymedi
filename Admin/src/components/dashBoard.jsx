@@ -31,6 +31,22 @@ function DashBoard() {
   useEffect(() => {
     fetchAppointments();
   }, []);
+    useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await fetch('https://easymedi-backend.vercel.app/doctors');
+        if (!response.ok) {
+          throw new Error('Failed to fetch doctors');
+        }
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   useEffect(() => {
     if (doctors.length) {
