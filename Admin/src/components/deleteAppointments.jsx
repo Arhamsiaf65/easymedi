@@ -171,7 +171,7 @@ function ManagePatients() {
                 );
 
                 const adminMessage = prompt(
-                    `Appointment canceled successfully. Enter a message to notify the user (${appointment.patient.email}):`
+                    `Appointment canceled successfully. Enter a message to notify the user:`
                 );
 
                 if (adminMessage) {
