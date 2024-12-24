@@ -22,6 +22,7 @@ function Form() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [toast, setToast] = useState(null);
   const dateRef = useRef();
   const submitBtnRef = useRef();
 
@@ -112,6 +113,24 @@ function Form() {
 
   const handleTimeChange = (e) => setSelectedTime(e.target.value);
 
+  const Toast = styled.div`
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: ${(props) => (props.type === 'success' ? '#22c55e' : '#ef4444')};
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fade-in-out 4s;
+
+    @keyframes fade-in-out {
+        0%, 90% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+`;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -142,10 +161,11 @@ function Form() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(data.message || 'Appointment booked successfully!');
+        setToast({ type: 'success', message: 'Appointment booked successfully!' });
       } else {
-        alert('Failed to book appointment. Please try again.');
+        setToast({ type: 'error', message: 'Failed to book the appointment.' });
       }
+      setTimeout(() => setToast(null), 4000);
     } catch (error) {
       console.error('Error:', error);
       alert('An error occurred while submitting the form. Please try again later.');
@@ -312,6 +332,11 @@ function Form() {
           )}
 
           <div className="flex justify-center mt-8">
+          {toast && (
+                    <Toast type={toast.type}>
+                        {toast.message}
+                    </Toast>
+                )}
             <button
               ref={submitBtnRef}
               type="submit"
