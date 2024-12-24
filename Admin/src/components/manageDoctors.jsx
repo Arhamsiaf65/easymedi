@@ -4,26 +4,25 @@ import DeleteDoctor from './DeleteDoctor';
 import ViewDoctors from './ViewDoctors';
 
 function ManageDoctors() {
-  const [doctors, setDoctors] = useState([]);
   const [selectedAction, setSelectedAction] = useState('view');
 
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await fetch('https://easymedi-backend.vercel.app/doctors');
-        if (!response.ok) {
-          throw new Error('Failed to fetch doctors');
-        }
-        const data = await response.json();
-        console.log(data);
-        setDoctors(data); // Populate doctors initially
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchDoctors = async () => {
+  //     try {
+  //       const response = await fetch('https://easymedi-backend.vercel.app/doctors');
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch doctors');
+  //       }
+  //       const data = await response.json();
+  //       console.log(data);
+  //       setDoctors(data); // Populate doctors initially
+  //     } catch (error) {
+  //       console.error(error.message);
+  //     }
+  //   };
 
-    fetchDoctors();
-  }, []);
+  //   fetchDoctors();
+  // }, []);
 
   return (
     <div className="manage-doctors p-6">
