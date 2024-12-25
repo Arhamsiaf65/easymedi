@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DoctorsContext } from '../../context/doctorsContext';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 function DashBoard() {
   const [appointments, setAppointments] = useState([]);
   const [appointmentsLoading, setAppointmentsLoading] = useState(true);
+  const [doctorsLoading , setDoctorsLoading] = useState(true);
   const [specializations, setSpecializations] = useState([]);
   const {
     doctors,
-    loading: doctorsLoading,
     error,
     clearError,
   } = useContext(DoctorsContext);
@@ -29,7 +30,9 @@ function DashBoard() {
   };
 
   const fetchDoctors = async () => {
+    setDoctorsLoading(true);
     try {
+
       const response = await fetch('https://easymedi-backend.vercel.app/doctors');
       if (!response.ok) {
         throw new Error('Failed to fetch doctors');
@@ -38,6 +41,8 @@ function DashBoard() {
       console.log(data);
     } catch (error) {
       console.error(error.message);
+    } finally{
+      setDoctorsLoading(false);
     }
   };
 
@@ -61,7 +66,7 @@ function DashBoard() {
     (appointment) => new Date(appointment.date) > new Date()
   );
 
-  const isLoading = doctorsLoading || appointmentsLoading;
+  const isLoading =  appointmentsLoading || doctorsLoading;
 
   if (isLoading) {
     return (
