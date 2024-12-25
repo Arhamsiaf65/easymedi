@@ -56,9 +56,11 @@ function DashBoard() {
   };
 
   useEffect(() => {
-    fetchDoctors();
     fetchAppointments();
   }, []);
+  useEffect(()=> {
+    fetchDoctors();
+  }, [])
 
     
 
