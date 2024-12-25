@@ -128,10 +128,6 @@ export const DoctorsProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
-
   return (
     <DoctorsContext.Provider
       value={{
