@@ -5,7 +5,6 @@ function ViewDoctors() {
   const {
     doctors,
     setDoctors,
-    loading,
     error,
     deleteDoctor,
     deleteFromLast,
@@ -68,7 +67,6 @@ function ViewDoctors() {
     setTimeout(() => setIsDeleting(false), 3000);
   };
 
-  if (loading) return <div className="text-center text-lg font-medium">Loading...</div>;
   if (error) return <div className="text-center text-red-500">{`Error: ${error}`}</div>;
 
   return (
