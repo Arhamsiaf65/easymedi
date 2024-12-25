@@ -13,7 +13,9 @@ export const DoctorsProvider = ({ children }) => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://easymedi-backend.vercel.app/doctors');
+      const response = await fetch('https://easymedi-backend.vercel.app/doctors', {
+      mode: 'no-cors',
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch doctors. Status: ${response.status}`);
       }
