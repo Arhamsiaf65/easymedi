@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { DoctorsContext } from '../../context/doctorsContext';
 
 function DeleteDoctor() {
-  const { doctors, deleteDoctor, loading, error } = useContext(DoctorsContext);
+  const { doctors, deleteDoctor,  error } = useContext(DoctorsContext);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [message, setMessage] = useState('');
 
@@ -22,7 +22,6 @@ function DeleteDoctor() {
     }
   };
 
-  if (loading) return <p>Loading doctors...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
