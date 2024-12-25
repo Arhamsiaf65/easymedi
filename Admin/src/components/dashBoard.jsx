@@ -9,6 +9,7 @@ function DashBoard() {
   const [specializations, setSpecializations] = useState([]);
   const {
     doctors,
+    setDoctors,
     error,
     clearError,
   } = useContext(DoctorsContext);
@@ -29,16 +30,24 @@ function DashBoard() {
     }
   };
 
+  const setSpecializationsList = (doctors) => {
+    if (doctors.length) {
+      const specializationsList = [
+        ...new Set(doctors.map((doc) => doc.specialization)),
+      ];
+      setSpecializations(specializationsList);
+    }
+  }
   const fetchDoctors = async () => {
     setDoctorsLoading(true);
     try {
-
       const response = await fetch('https://easymedi-backend.vercel.app/doctors');
       if (!response.ok) {
         throw new Error('Failed to fetch doctors');
       }
       const data = await response.json();
-      console.log(data);
+      setDoctors(data.doctorsList);
+       setSpecializationsList(data.doctorsList)
     } catch (error) {
       console.error(error.message);
     } finally{
@@ -54,12 +63,7 @@ function DashBoard() {
     
 
   useEffect(() => {
-    if (doctors.length) {
-      const specializationsList = [
-        ...new Set(doctors.map((doc) => doc.specialization)),
-      ];
-      setSpecializations(specializationsList);
-    }
+   
   }, [doctors]);
 
   const upcomingAppointments = appointments.filter(
