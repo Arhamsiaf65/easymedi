@@ -30,8 +30,8 @@ function App() {
  
 
   const handleLogin = async (email, password, setUser) => {
-    if (email === "admin@gmail.com" && password === "123") {
-      setUser({ email }); // Set the user state with the email or any user object
+    if (email === "demo@admin.com" && password === "demo123") {
+      setUser({ email });
       return true;
     }
     return false;
