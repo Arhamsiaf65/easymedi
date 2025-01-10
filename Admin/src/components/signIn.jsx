@@ -5,7 +5,6 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
   const [animateButton, setAnimateButton] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emoji, setEmoji] = useState("");
-  const [showLoginButton, setShowLoginButton] = useState(true); // New state for showing login button
 
   const resetState = () => {
     setShowWarning(false);
@@ -25,25 +24,14 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Reset the state immediately before handling the submission
     resetState();
 
-    // Disable the login button and show the warning initially
-    setShowLoginButton(false);
-
-    // Simulate a delay before handling the submission result
     if (!email || !password) {
       setErrorMessage("Oops! Did you forget something?");
       setEmoji("🤔");
       setAnimateButton(true);
-
-      setTimeout(() => {
-        setAnimateButton(false);
-        resetState();  // Reset after 2 seconds
-        setShowLoginButton(true);  // Show the login button again
-      }, 2000);
-
+      setTimeout(() => setAnimateButton(false), 2000);
+      setTimeout(resetState, 2000);  
       return;
     }
 
@@ -55,18 +43,9 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
       setErrorMessage("Oops! Wrong credentials. Try again!");
       setEmoji("😬");
       setAnimateButton(true);
-
-      setTimeout(() => {
-        setAnimateButton(false);
-        resetState();  // Reset after 2 seconds
-        setShowLoginButton(true);  // Show the login button again
-      }, 2000);
+      setTimeout(() => setAnimateButton(false), 2000);
+      setTimeout(resetState, 2000); 
     }
-
-    // Reset warning after 2 seconds in both cases
-    setTimeout(() => {
-      setShowWarning(false);
-    }, 2000);
   };
 
   return (
@@ -104,17 +83,13 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
                 />
                 <p className="mt-2 text-center text-red-600">Bro! Can't see your credentials</p>
               </>
-            ) : showLoginButton ? (
+            ) : (
               <button
                 type="submit"
                 className={`py-3 px-6 text-white font-semibold rounded-lg shadow-md bg-teal-600 hover:bg-teal-700 focus:outline-none transition-transform transform ${animateButton ? "animate-shake" : "hover:scale-105"}`}
               >
                 {animateButton ? "Oops! 🤪" : "Login"}
               </button>
-            ) : (
-              <div className="py-3 px-6 text-white font-semibold rounded-lg bg-teal-600 opacity-50">
-                Login
-              </div>
             )}
           </div>
         </form>
@@ -123,6 +98,14 @@ export const SignIn = ({ handleLogin, email, setEmail, password, setPassword, se
             {emoji} {errorMessage}
           </p>
         )}
+        <div className="mt-8 text-center">
+          <h3 className="text-lg font-semibold text-teal-900">Demo Credentials</h3>
+          <p className="text-gray-700">Email: demo@admin.com</p>
+          <p className="text-gray-700">Password: demo123</p>
+          <p className="mt-2 text-sm text-gray-500">
+            These credentials are for demonstration purposes only.
+          </p>
+        </div>
       </div>
     </div>
   );
